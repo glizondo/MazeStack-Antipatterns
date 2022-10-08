@@ -12,10 +12,7 @@ public class Maze {
 	private int[][] maze;
 
 	public Maze() {
-//		this.x = x;
-//		this.y = y;
-//		this.startPoint = startPoint;
-//		this.endPoint = endPoint;
+
 	}
 
 	public void readFromFile() {
@@ -23,24 +20,15 @@ public class Maze {
 			FileInputStream fileReader = new FileInputStream("maze.txt");
 			Scanner input = new Scanner(fileReader);
 			int sizeX = input.nextInt();
-			System.out.println(sizeX);
 			int sizeY = input.nextInt();
-			System.out.println(sizeY);
-
 			maze = new int[sizeX][sizeY];
-			System.out.println(maze);
-			int startX = input.nextInt();
-			System.out.println(startX);
 
+			int startX = input.nextInt();
 			int startY = input.nextInt();
-			System.out.println(startY);
 			startPoint = new int[startX][startY];
 
 			int endX = input.nextInt();
-			System.out.println(endX);
-
 			int endY = input.nextInt();
-			System.out.println(endY);
 			endPoint = new int[endX][endY];
 
 			for (int i = 0; i < sizeX; i++) {
@@ -49,36 +37,29 @@ public class Maze {
 
 				}
 			}
-			for (int k = 0; k < 10; k++) {
-				for (int l = 0; l < 10; l++) {
-					System.out.print(maze[k][l]);
-				}
-				System.out.println();
-			}
-
-//			System.out.println(maze);
+			// Prints maze in console
+			printMaze();
+			input.close();
 		}
 
 		catch (IOException e) {
 			System.out.println("Error reading file");
 		}
+
 	}
 
 	public void move() {
-	
+
 	}
 
+	// Prints maze in console
 	public void printMaze() {
-		for (int k = 0; k < 10; k++) {
-			for (int l = 0; l < 10; l++) {
+		for (int k = 0; k < maze.length; k++) {
+			for (int l = 0; l < maze.length; l++) {
 				System.out.print(maze[k][l]);
 			}
 			System.out.println();
 		}
 	}
-
-//	public int[][] printMaze(){
-//		
-//	}
 
 }

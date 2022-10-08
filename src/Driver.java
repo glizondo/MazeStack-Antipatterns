@@ -6,7 +6,7 @@ public class Driver {
 		Maze maze = new Maze();
 		maze.readFromFile();
 //		maze.move();
-		maze.printMaze();
+//		maze.printMaze();
 
 	}
 
