@@ -52,9 +52,13 @@ public class Maze {
 		currentPoint = new int[x][y];
 		currentPoint = startPoint;
 		System.out.println();
-		//Change to while to generate loop until in ends
+		int[][] nextPoint1 = new int[x + 1][y];
+		int[][] nextPoint2 = new int[x - 1][y];
+		int[][] nextPoint3 = new int[x + 1][y + 1];
+		int[][] nextPoint4 = new int[x + 1][y - 1];
+//		 int nextPoint1 [x+1][y];
+		// Change to while to generate loop until in ends
 		if (currentPoint[x][y] == 1) {
-			
 
 		} else {
 			System.out.println("Starting point is a block");
