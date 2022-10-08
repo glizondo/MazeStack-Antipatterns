@@ -9,6 +9,8 @@ public class Driver {
 //		maze.printMaze();
 		System.out.println(maze);
 		System.out.println();
+		maze.move();
+		
 
 	}
 

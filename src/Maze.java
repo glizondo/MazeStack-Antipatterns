@@ -4,13 +4,29 @@ import java.util.Scanner;
 
 public class Maze {
 
-	private int x;
-	private int y;
-	private int[][] startPoint;
-	private int[][] endPoint;
-	private int[][] currentPoint;
+	private int currentLocationX;
+	private int currentLocationY;
+	private int startLocationX;
+	private int startLocationY;
+	private int endLocationX;
+	private int endLocationY;
+	private int sizeMazeX;
+	private int sizeMazeY;
+	private boolean nextPoint1Possible = false;
+	private boolean nextPoint2Possible = false;
+	private boolean nextPoint3Possible = false;
+	private boolean nextPoint4Possible = false;
+	private boolean closedPoint1 = false;
+	private boolean closedPoint2 = false;
+	private boolean closedPoint3 = false;
+	private boolean closedPoint4 = false;
+
+//	private int[][] startPoint;
+//	private int[][] endPoint;
+//	private int[][] currentPoint;
 	private int[][] maze;
-	private MazeStack stack = new MazeStack();
+	private MazeStack pathStack = new MazeStack();
+	private MazeStack branchStack = new MazeStack();
 
 	public Maze() {
 
@@ -18,22 +34,22 @@ public class Maze {
 
 	public void readFromFile() {
 		try {
-			FileInputStream fileReader = new FileInputStream("maze.txt");
+			FileInputStream fileReader = new FileInputStream("maze3.txt");
 			Scanner input = new Scanner(fileReader);
-			int sizeX = input.nextInt();
-			int sizeY = input.nextInt();
-			maze = new int[sizeX][sizeY];
+			sizeMazeX = input.nextInt();
+			sizeMazeY = input.nextInt();
+			maze = new int[sizeMazeX][sizeMazeY];
 
-			int startX = input.nextInt();
-			int startY = input.nextInt();
-			startPoint = new int[startX][startY];
+			startLocationX = input.nextInt();
+			startLocationY = input.nextInt();
+//			startPoint = new int[startX][startY];
 
-			int endX = input.nextInt();
-			int endY = input.nextInt();
-			endPoint = new int[endX][endY];
+			endLocationX = input.nextInt();
+			endLocationY = input.nextInt();
+//			endPoint = new int[endX][endY];
 
-			for (int i = 0; i < sizeX; i++) {
-				for (int j = 0; j < sizeY; j++) {
+			for (int i = 0; i < sizeMazeX; i++) {
+				for (int j = 0; j < sizeMazeY; j++) {
 					maze[i][j] = input.nextInt();
 
 				}
@@ -49,19 +65,160 @@ public class Maze {
 	}
 
 	public void move() {
-		currentPoint = new int[x][y];
-		currentPoint = startPoint;
-		System.out.println();
-		int[][] nextPoint1 = new int[x + 1][y];
-		int[][] nextPoint2 = new int[x - 1][y];
-		int[][] nextPoint3 = new int[x + 1][y + 1];
-		int[][] nextPoint4 = new int[x + 1][y - 1];
-//		 int nextPoint1 [x+1][y];
-		// Change to while to generate loop until in ends
-		if (currentPoint[x][y] == 1) {
 
-		} else {
-			System.out.println("Starting point is a block");
+		int count = 0;
+		int moveCount = 0; // moves since last branch
+
+		currentLocationX = startLocationX;
+		currentLocationY = startLocationY;
+
+		int nextPointX1 = currentLocationX + 1;
+		int nextPointX2 = currentLocationX - 1;
+		int nextPointY1 = currentLocationY + 1;
+		int nextPointY2 = currentLocationY - 1;
+
+		System.out.println("currentlocationx = " + currentLocationX);
+		System.out.println("currentlocationy = " + currentLocationY);
+		System.out.println("maze current location" + maze[currentLocationX][currentLocationY]);
+
+		System.out.println(maze[currentLocationX + 1][currentLocationY]);
+
+		branchStack.push(currentLocationY);
+		branchStack.push(currentLocationX);
+
+		while (maze[currentLocationX][currentLocationY] == 1) {
+
+			if (currentLocationX == endLocationX && currentLocationY == endLocationY) {
+				System.out.println("Solved the maze!!");
+				System.out.println(endLocationX + " / " + endLocationY);
+				System.exit(0);
+			}
+
+			System.out.println("Current Location " + "X: " + currentLocationX + "Y: " + currentLocationY);
+			count = 0;
+			moveCount++;
+			pathStack.push(currentLocationY);
+			pathStack.push(currentLocationX);
+			if (currentLocationX != 0) {
+				try {
+					if (maze[currentLocationX + 1][currentLocationY] == 0) {
+						nextPoint1Possible = false;
+						System.out.println("Line1");
+					} else {
+						nextPoint1Possible = true;
+						System.out.println("Line1True");
+						count++;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (currentLocationX != sizeMazeX) {
+				try {
+					if (maze[currentLocationX - 1][currentLocationY] == 0) {
+						nextPoint2Possible = false;
+						System.out.println("Line2");
+					} else {
+						nextPoint2Possible = true;
+						System.out.println("Line2True");
+						count++;
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+//			if (currentLocationY != 0) {
+			try {
+
+				if (maze[currentLocationX][currentLocationY + 1] == 0) {
+					nextPoint3Possible = false;
+					System.out.println("Line3");
+				} else {
+					nextPoint3Possible = true;
+					closedPoint4 = true;
+					System.out.println("Line3True");
+					count++;
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+//			}
+
+			if (currentLocationY != sizeMazeY && closedPoint4 == false) {
+				try {
+					if (maze[currentLocationX][currentLocationY - 1] == 0) {
+						nextPoint4Possible = false;
+						System.out.println("Line4");
+					} else {
+						nextPoint4Possible = true;
+						System.out.println("Line4True");
+						count++;
+
+					}
+				} catch (Exception e) {
+					nextPoint4Possible = false;
+					e.printStackTrace();
+				}
+			}
+
+			System.out.println("count " + count);
+			if (count == 1) {
+
+				// Only one way to go
+				if (nextPoint1Possible == true) {
+					currentLocationX = currentLocationX + 1;
+
+				}
+				if (nextPoint2Possible == true) {
+					currentLocationX = currentLocationX - 1;
+
+				}
+				if (nextPoint3Possible == true) {
+					System.out.println("Update location for 3");
+					currentLocationY = currentLocationY + 1;
+
+				}
+				if (nextPoint4Possible == true) {
+					currentLocationY = currentLocationY - 1;
+
+				}
+			} else if (count == 0) {
+
+				// Go to last branch
+				if (!branchStack.isEmpty()) {
+					currentLocationX = branchStack.pop();
+					currentLocationY = branchStack.pop();
+				} else {
+					System.out.println("Not possible");
+					System.exit(0);
+				}
+
+			} else if (count > 1) {
+				// add current location to last branch
+				// pick way to go
+
+				branchStack.push(currentLocationY);
+				branchStack.push(currentLocationX);
+
+				if (nextPoint1Possible = true) {
+					currentLocationX = currentLocationX + 1;
+
+				} else if (nextPoint2Possible = true) {
+					currentLocationX = currentLocationX - 1;
+
+				} else if (nextPoint3Possible = true) {
+					currentLocationY = currentLocationY + 1;
+
+				} else if (nextPoint4Possible = true) {
+					currentLocationY = currentLocationY - 1;
+
+				}
+			}
+
 		}
 
 	}
