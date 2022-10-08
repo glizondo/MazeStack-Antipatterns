@@ -7,6 +7,8 @@ public class Driver {
 		maze.readFromFile();
 //		maze.move();
 //		maze.printMaze();
+		System.out.println(maze);
+		System.out.println();
 
 	}
 

@@ -10,6 +10,7 @@ public class Maze {
 	private int[][] endPoint;
 	private int[][] currentPoint;
 	private int[][] maze;
+	private MazeStack stack = new MazeStack();
 
 	public Maze() {
 
@@ -37,9 +38,8 @@ public class Maze {
 
 				}
 			}
-			// Prints maze in console
-			printMaze();
 			input.close();
+			printMaze();
 		}
 
 		catch (IOException e) {
@@ -49,10 +49,20 @@ public class Maze {
 	}
 
 	public void move() {
+		currentPoint = new int[x][y];
+		currentPoint = startPoint;
+		System.out.println();
+		//Change to while to generate loop until in ends
+		if (currentPoint[x][y] == 1) {
+			
+
+		} else {
+			System.out.println("Starting point is a block");
+		}
 
 	}
 
-	// Prints maze in console
+	// Prints maze in console inside the class
 	public void printMaze() {
 		for (int k = 0; k < maze.length; k++) {
 			for (int l = 0; l < maze.length; l++) {
@@ -60,6 +70,21 @@ public class Maze {
 			}
 			System.out.println();
 		}
+	}
+
+	// Override for toString method works only outside the class
+	@Override
+	public String toString() {
+		String line = "";
+		for (int row = 0; row < maze.length; row++) {
+			for (int col = 0; col < maze[row].length; col++) {
+				line += " " + maze[row][col];
+				if (col == 9) {
+					line += "\n";
+				}
+			}
+		}
+		return line;
 	}
 
 }
