@@ -34,7 +34,7 @@ public class Maze {
 
 	public void readFromFile() {
 		try {
-			FileInputStream fileReader = new FileInputStream("maze3.txt");
+			FileInputStream fileReader = new FileInputStream("maze5.txt");
 			Scanner input = new Scanner(fileReader);
 			sizeMazeX = input.nextInt();
 			sizeMazeY = input.nextInt();
@@ -86,8 +86,9 @@ public class Maze {
 		branchStack.push(currentLocationY);
 		branchStack.push(currentLocationX);
 
+		// Happens only if the current location is 1 meaning not a block
 		while (maze[currentLocationX][currentLocationY] == 1) {
-
+			// This happens when the current location is the end point. Maze solved
 			if (currentLocationX == endLocationX && currentLocationY == endLocationY) {
 				System.out.println("Solved the maze!!");
 				System.out.println(endLocationX + " / " + endLocationY);
@@ -99,73 +100,99 @@ public class Maze {
 			moveCount++;
 			pathStack.push(currentLocationY);
 			pathStack.push(currentLocationX);
-			if (currentLocationX != 0) {
+			// Possible path to go is x + 1
+			// currentLocationX != 0 &&
+			if (closedPoint1 == false) {
 				try {
 					if (maze[currentLocationX + 1][currentLocationY] == 0) {
 						nextPoint1Possible = false;
 						System.out.println("Line1");
 					} else {
 						nextPoint1Possible = true;
-						System.out.println("Line1True");
+						closedPoint1 = false;
+						closedPoint2 = true;
+						closedPoint3 = false;
+						closedPoint4 = false;
+
+						System.out.println("Line1 True");
 						count++;
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Cannot go south");
 				}
 			}
-			if (currentLocationX != sizeMazeX) {
+
+			// Possible path to go is x - 1
+			// currentLocationX != sizeMazeX &&
+			if (closedPoint2 == false) {
 				try {
 					if (maze[currentLocationX - 1][currentLocationY] == 0) {
 						nextPoint2Possible = false;
 						System.out.println("Line2");
 					} else {
 						nextPoint2Possible = true;
-						System.out.println("Line2True");
+						closedPoint1 = true;
+						closedPoint2 = false;
+						closedPoint3 = false;
+						closedPoint4 = false;
+
+						System.out.println("Line2 True");
 						count++;
 
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Cannot go north");
 				}
 			}
+			// Possible path to go is y + 1
+//			currentLocationY != 0 &&
+			if (closedPoint3 == false) {
+				try {
 
-//			if (currentLocationY != 0) {
-			try {
+					if (maze[currentLocationX][currentLocationY + 1] == 0) {
+						nextPoint3Possible = false;
+						System.out.println("Line3");
+					} else {
+						nextPoint3Possible = true;
+						closedPoint1 = false;
+						closedPoint2 = false;
+						closedPoint3 = false;
+						closedPoint4 = true;
+						System.out.println("Line3 True");
+						count++;
 
-				if (maze[currentLocationX][currentLocationY + 1] == 0) {
-					nextPoint3Possible = false;
-					System.out.println("Line3");
-				} else {
-					nextPoint3Possible = true;
-					closedPoint4 = true;
-					System.out.println("Line3True");
-					count++;
-
+					}
+				} catch (Exception e) {
+					System.out.println("Cannot go east");
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
-
-//			}
-
-			if (currentLocationY != sizeMazeY && closedPoint4 == false) {
+			// Possible path to go is y - 1
+			// currentLocationY != sizeMazeY &&
+			if (closedPoint4 == false) {
 				try {
 					if (maze[currentLocationX][currentLocationY - 1] == 0) {
 						nextPoint4Possible = false;
 						System.out.println("Line4");
 					} else {
 						nextPoint4Possible = true;
-						System.out.println("Line4True");
+						closedPoint1 = false;
+						closedPoint2 = false;
+						closedPoint3 = true;
+						closedPoint4 = false;
+						System.out.println("Line4 True");
 						count++;
 
 					}
 				} catch (Exception e) {
 					nextPoint4Possible = false;
-					e.printStackTrace();
+					System.out.println("Cannot go west");
 				}
 			}
-
+			// After checking which next step is possible goes to check if there is just 1,
+			// 2 or zero options
 			System.out.println("count " + count);
+			// If there is only one path to follow. Updates location to that one
 			if (count == 1) {
 
 				// Only one way to go
@@ -186,7 +213,10 @@ public class Maze {
 					currentLocationY = currentLocationY - 1;
 
 				}
-			} else if (count == 0) {
+				// If there are no options to where to go next, this brings back to the last
+				// option where there were more than 1 options
+			}
+			if (count == 0) {
 
 				// Go to last branch
 				if (!branchStack.isEmpty()) {
@@ -196,8 +226,11 @@ public class Maze {
 					System.out.println("Not possible");
 					System.exit(0);
 				}
-
-			} else if (count > 1) {
+				// When there are more than 1 paths to follow, stacks the location for future
+				// come back
+			}
+			if (count > 1) {
+				System.out.println("GOT TO COUNT 2");
 				// add current location to last branch
 				// pick way to go
 
