@@ -82,7 +82,7 @@ public class Maze {
 		while (maze[currentLocationX][currentLocationY] == 1) {
 			// This happens when the current location is the end point. Maze solved
 			if (currentLocationX == endLocationX && currentLocationY == endLocationY) {
-				System.out.println("Solved the maze!!");
+				System.out.println("Maze solved in " + moveCount + " moves");
 				System.out.println(endLocationX + " / " + endLocationY);
 				System.exit(0);
 			}
@@ -107,10 +107,6 @@ public class Maze {
 						goWestPossible = true;
 						System.out.println("Go south True");
 						count++;
-//						if (maze[currentLocationX + 2][currentLocationY] == 0) {
-////							goSouthClosed = true;
-//							goSouthPossible = false;
-//						}
 
 					}
 				} catch (Exception e) {
