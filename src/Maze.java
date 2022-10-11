@@ -12,18 +12,10 @@ public class Maze {
 	private int endLocationY;
 	private int sizeMazeX;
 	private int sizeMazeY;
-	private boolean nextPoint1Possible = false;
-	private boolean nextPoint2Possible = false;
-	private boolean nextPoint3Possible = false;
-	private boolean nextPoint4Possible = false;
-	private boolean closedPoint1 = false;
-	private boolean closedPoint2 = false;
-	private boolean closedPoint3 = false;
-	private boolean closedPoint4 = false;
-
-//	private int[][] startPoint;
-//	private int[][] endPoint;
-//	private int[][] currentPoint;
+	private boolean goSouthPossible = false;
+	private boolean goNorthPossible = false;
+	private boolean goEastPossible = false;
+	private boolean goWestPossible = false;
 	private int[][] maze;
 	private MazeStack pathStack = new MazeStack();
 	private MazeStack branchStack = new MazeStack();
@@ -72,11 +64,6 @@ public class Maze {
 		currentLocationX = startLocationX;
 		currentLocationY = startLocationY;
 
-		int nextPointX1 = currentLocationX + 1;
-		int nextPointX2 = currentLocationX - 1;
-		int nextPointY1 = currentLocationY + 1;
-		int nextPointY2 = currentLocationY - 1;
-
 		System.out.println("currentlocationx = " + currentLocationX);
 		System.out.println("currentlocationy = " + currentLocationY);
 		System.out.println("maze current location" + maze[currentLocationX][currentLocationY]);
@@ -85,6 +72,11 @@ public class Maze {
 
 		branchStack.push(currentLocationY);
 		branchStack.push(currentLocationX);
+
+		goSouthPossible = true;
+		goNorthPossible = true;
+		goEastPossible = true;
+		goWestPossible = true;
 
 		// Happens only if the current location is 1 meaning not a block
 		while (maze[currentLocationX][currentLocationY] == 1) {
@@ -95,97 +87,100 @@ public class Maze {
 				System.exit(0);
 			}
 
-			System.out.println("Current Location " + "X: " + currentLocationX + "Y: " + currentLocationY);
+			System.out.println("Current Location " + "X: " + currentLocationX + " Y: " + currentLocationY);
 			count = 0;
 			moveCount++;
 			pathStack.push(currentLocationY);
 			pathStack.push(currentLocationX);
+
 			// Possible path to go is x + 1
 			// currentLocationX != 0 &&
-			if (closedPoint1 == false) {
+			if (goSouthPossible == true) {
 				try {
 					if (maze[currentLocationX + 1][currentLocationY] == 0) {
-						nextPoint1Possible = false;
-						System.out.println("Line1");
+						goSouthPossible = false;
+						System.out.println("Go south False");
 					} else {
-						nextPoint1Possible = true;
-						closedPoint1 = false;
-						closedPoint2 = true;
-						closedPoint3 = false;
-						closedPoint4 = false;
-
-						System.out.println("Line1 True");
+						goSouthPossible = true;
+						goNorthPossible = false;
+						goEastPossible = true;
+						goWestPossible = true;
+						System.out.println("Go south True");
 						count++;
+//						if (maze[currentLocationX + 2][currentLocationY] == 0) {
+////							goSouthClosed = true;
+//							goSouthPossible = false;
+//						}
+
 					}
 				} catch (Exception e) {
+					goSouthPossible = false;
 					System.out.println("Cannot go south");
 				}
 			}
 
 			// Possible path to go is x - 1
 			// currentLocationX != sizeMazeX &&
-			if (closedPoint2 == false) {
+			if (goNorthPossible == true) {
 				try {
 					if (maze[currentLocationX - 1][currentLocationY] == 0) {
-						nextPoint2Possible = false;
-						System.out.println("Line2");
+						goNorthPossible = false;
+						System.out.println("Go north False");
 					} else {
-						nextPoint2Possible = true;
-						closedPoint1 = true;
-						closedPoint2 = false;
-						closedPoint3 = false;
-						closedPoint4 = false;
-
-						System.out.println("Line2 True");
+						goNorthPossible = true;
+						goSouthPossible = false;
+						goEastPossible = true;
+						goWestPossible = true;
+						System.out.println("Go north True");
 						count++;
 
 					}
 				} catch (Exception e) {
+					goNorthPossible = false;
 					System.out.println("Cannot go north");
 				}
 			}
 			// Possible path to go is y + 1
 //			currentLocationY != 0 &&
-			if (closedPoint3 == false) {
+			if (goEastPossible == true) {
 				try {
 
 					if (maze[currentLocationX][currentLocationY + 1] == 0) {
-						nextPoint3Possible = false;
-						System.out.println("Line3");
+						goEastPossible = false;
+						System.out.println("Go east False");
 					} else {
-						nextPoint3Possible = true;
-						closedPoint1 = false;
-						closedPoint2 = false;
-						closedPoint3 = false;
-						closedPoint4 = true;
-						System.out.println("Line3 True");
+						goEastPossible = true;
+						goWestPossible = false;
+						goSouthPossible = true;
+						goNorthPossible = true;
+						System.out.println("Go east True");
 						count++;
 
 					}
 				} catch (Exception e) {
+					goEastPossible = false;
 					System.out.println("Cannot go east");
 				}
 
 			}
 			// Possible path to go is y - 1
 			// currentLocationY != sizeMazeY &&
-			if (closedPoint4 == false) {
+			if (goWestPossible == true) {
 				try {
 					if (maze[currentLocationX][currentLocationY - 1] == 0) {
-						nextPoint4Possible = false;
-						System.out.println("Line4");
+						goWestPossible = false;
+						System.out.println("Go west False");
 					} else {
-						nextPoint4Possible = true;
-						closedPoint1 = false;
-						closedPoint2 = false;
-						closedPoint3 = true;
-						closedPoint4 = false;
-						System.out.println("Line4 True");
+						goWestPossible = true;
+						goEastPossible = false;
+						goSouthPossible = true;
+						goNorthPossible = true;
+						System.out.println("Go west True");
 						count++;
 
 					}
 				} catch (Exception e) {
-					nextPoint4Possible = false;
+					goWestPossible = false;
 					System.out.println("Cannot go west");
 				}
 			}
@@ -196,20 +191,20 @@ public class Maze {
 			if (count == 1) {
 
 				// Only one way to go
-				if (nextPoint1Possible == true) {
+				if (goSouthPossible == true) {
 					currentLocationX = currentLocationX + 1;
 
 				}
-				if (nextPoint2Possible == true) {
+				if (goNorthPossible == true) {
 					currentLocationX = currentLocationX - 1;
 
 				}
-				if (nextPoint3Possible == true) {
+				if (goEastPossible == true) {
 					System.out.println("Update location for 3");
 					currentLocationY = currentLocationY + 1;
 
 				}
-				if (nextPoint4Possible == true) {
+				if (goWestPossible == true) {
 					currentLocationY = currentLocationY - 1;
 
 				}
@@ -220,8 +215,36 @@ public class Maze {
 
 				// Go to last branch
 				if (!branchStack.isEmpty()) {
+
+					if (maze[currentLocationX + 1][currentLocationY] == 0) {
+						goSouthPossible = false;
+						goNorthPossible = false;
+						goEastPossible = true;
+						goWestPossible = true;
+						System.out.println("Go south False");
+					} else if (maze[currentLocationX - 1][currentLocationY] == 0) {
+						goSouthPossible = false;
+						goNorthPossible = false;
+						goEastPossible = true;
+						goWestPossible = true;
+						System.out.println("Go north False");
+					} else if (maze[currentLocationX][currentLocationY + 1] == 0) {
+						goSouthPossible = true;
+						goNorthPossible = true;
+						goEastPossible = false;
+						goWestPossible = false;
+						System.out.println("Go east False");
+					} else if (maze[currentLocationX][currentLocationY - 1] == 0) {
+						goSouthPossible = true;
+						goNorthPossible = true;
+						goEastPossible = false;
+						goWestPossible = false;
+						System.out.println("Go west False");
+					}
+
 					currentLocationX = branchStack.pop();
 					currentLocationY = branchStack.pop();
+
 				} else {
 					System.out.println("Not possible");
 					System.exit(0);
@@ -237,16 +260,16 @@ public class Maze {
 				branchStack.push(currentLocationY);
 				branchStack.push(currentLocationX);
 
-				if (nextPoint1Possible = true) {
+				if (goSouthPossible = true) {
 					currentLocationX = currentLocationX + 1;
 
-				} else if (nextPoint2Possible = true) {
+				} else if (goNorthPossible = true) {
 					currentLocationX = currentLocationX - 1;
 
-				} else if (nextPoint3Possible = true) {
+				} else if (goEastPossible = true) {
 					currentLocationY = currentLocationY + 1;
 
-				} else if (nextPoint4Possible = true) {
+				} else if (goWestPossible = true) {
 					currentLocationY = currentLocationY - 1;
 
 				}
