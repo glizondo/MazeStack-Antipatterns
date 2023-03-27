@@ -25,7 +25,6 @@ public class MazeStack {
 
 	public Integer peek() {
 		return arrayList.get(index);
-
 	}
 
 	public boolean isEmpty() {
