@@ -82,6 +82,7 @@ abstract class LocationTracker implements ILocationTracker {
 	public void printCurrentLocation() {
 		System.out.println("currentlocationx = " + currentPositionX);
 		System.out.println("currentlocationy = " + currentPositionY);
+		System.out.println();
 	}
 
 	@Override
