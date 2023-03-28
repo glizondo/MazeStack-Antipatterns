@@ -1,28 +1,21 @@
 
 public class MazeTracker extends LocationTracker {
-	
+
 	protected MazeStack pathStack = new MazeStack();
 	protected MazeStack branchStack = new MazeStack();
 	protected MazeGame maze = new MazeGame();
 
 	public MazeTracker(MazeGame maze) {
-		super(maze);
+		trackerMaze = maze.getMapArray();
 	}
-	
+
 	@Override
 	public void setStartingLocation() {
 		currentPositionX = maze.getStartLocationX();
 		currentPositionY = maze.getStartLocationY();
 	}
 
-	public void changePossibleDirectionsSNEW(boolean goSouthPossible, boolean goNorthPossible, boolean goEastPossible,
-			boolean goWestPossible) {
-		setGoSouthPossible(goSouthPossible);
-		setGoNorthPossible(goNorthPossible);
-		setGoEastPossible(goEastPossible);
-		setGoWestPossible(goWestPossible);
-	}
-
+	@Override
 	public void move() {
 
 		setStartingLocation();
@@ -44,6 +37,14 @@ public class MazeTracker extends LocationTracker {
 			handlePossiblePaths();
 		}
 		trackerMaze[currentPositionX][currentPositionY] = 0;
+	}
+
+	private void changePossibleDirectionsSNEW(boolean goSouthPossible, boolean goNorthPossible, boolean goEastPossible,
+			boolean goWestPossible) {
+		setGoSouthPossible(goSouthPossible);
+		setGoNorthPossible(goNorthPossible);
+		setGoEastPossible(goEastPossible);
+		setGoWestPossible(goWestPossible);
 	}
 
 	private void handlePossiblePaths() {

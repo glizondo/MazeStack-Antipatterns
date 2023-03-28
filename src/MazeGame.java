@@ -10,7 +10,7 @@ public class MazeGame extends BoardGame {
 
 	public int[][] readFromFile() {
 		try {
-			FileInputStream fileReader = new FileInputStream("maze3.txt");
+			FileInputStream fileReader = new FileInputStream("maze2.txt");
 			Scanner input = new Scanner(fileReader);
 
 			sizeMazeX = input.nextInt();

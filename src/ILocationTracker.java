@@ -8,5 +8,5 @@ public interface ILocationTracker {
 	public void printTrackedPath();
 	
 	public void move();
-
+	
 }

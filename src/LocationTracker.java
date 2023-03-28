@@ -1,5 +1,5 @@
 
-public class LocationTracker implements ILocationTracker {
+abstract class LocationTracker implements ILocationTracker {
 
 	protected int currentPositionX;
 	protected int currentPositionY;
@@ -11,8 +11,7 @@ public class LocationTracker implements ILocationTracker {
 	protected int movesOptions = 0;
 	protected int countMoves = 0;
 
-	public LocationTracker(MazeGame maze) {
-		trackerMaze = maze.getMapArray();
+	public LocationTracker() {
 	}
 
 	public int getX() {
@@ -93,15 +92,6 @@ public class LocationTracker implements ILocationTracker {
 			}
 			System.out.println();
 		}
-	}
-
-	@Override
-	public void move() {
-	}
-
-	@Override
-	public void setStartingLocation() {
-
 	}
 
 }

@@ -1,5 +1,5 @@
 
-public class BoardGame implements IBoardGame {
+abstract class BoardGame implements IBoardGame {
 
 	protected int startLocationX;
 	protected int startLocationY;
